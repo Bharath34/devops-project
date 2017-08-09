@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Builds Security Groups for web instance.
+Parameters:
+  VpcId:
+    Description: The ID of the VPC that you are adding the Security Group to.
+    Type: String
+  sshallow:
+    Description: CIDR range to allow ssh access
+    Type: String
+Resources:  InstanceSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable ports for EC2 Instances so users can access to application.
+      VpcId: !Ref 'VpcId'
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: !Ref 'sshallow'
+      Tags:
+      - Key: Name
+        Value: web-instance-sec-group
+Outputs:
+  InstanceSGId:
+    Value: !GetAtt 'InstanceSG.GroupId'
+    Description: codeassist-web Instance Security Group ID
