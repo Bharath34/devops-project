@@ -1,0 +1,55 @@
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: Launches new web instance.
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: String
+    Default: web-instance
+  InstanceSecurityGroup:
+    Description: ID of the security group to be used
+    Type: String  
+  SubnetId:
+    Description: Subnet to launch web instance
+    Type: String
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+  WebInstanceProfile:
+    Description: Instance Profile to use
+    Type: String
+  ServerName:
+    Description: Name of the Server.
+    Type: String
+    Default: web-instance
+  AmiId:
+    Description: Id of an EC2 AMI to launch
+    Type: String
+    Default: ami-a4c7edb2
+Resources:
+  Ec2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !Ref AmiId
+      NetworkInterfaces:
+      - AssociatePublicIpAddress: false
+        DeviceIndex: 0
+        SubnetId: !Ref 'SubnetId'
+        GroupSet:
+        - !Ref InstanceSecurityGroup
+      InstanceType: !Ref 'InstanceType'
+      IamInstanceProfile: !Ref WebInstanceProfile
+      KeyName: !Ref KeyName
+      Tags:
+        - Key: Name
+          Value: !Ref ServerName
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          # puppet
+          curl -k https://puppet-master-hostname:8140/packages/current/install.bash  | sudo bash
+         
+Outputs:
+  WebInstanceIpAddress:
+    Description: IP of test EC2 Instance
+    Value: !Sub '${Ec2Instance.PrivateIp}'
