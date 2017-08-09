@@ -8,14 +8,10 @@ class puppet_module_apache::config {
     content => template('puppet_module_apache/httpd.conf.erb'),
     notify  => Class['puppet_module_apache::service'],
   }
-  file { "${sitedir}/ssl.conf":
-    ensure  => 'present',
-    content => template('puppet_module_apache/ssl.conf.erb'),
-    notify  => Class['puppet_module_apache::service'],
-  }
   file { '/var/log/httpd':
     ensure => 'directory',
     owner  => 'apache',
     group  => 'apache',
     mode   => '0700',
   }
+}
