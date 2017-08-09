@@ -1,0 +1,21 @@
+NameVirtualHost *:80
+NameVirtualHost *:443
+DocumentRoot "/var/www/html"
+<Directory "/var/www/html">
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        Redirect permanent / https://<%= scope['puppet_module_apache::params::server_name'] %>/
+</VirtualHost>
+<VirtualHost _default_:443>
+DocumentRoot "/var/www/html"
+SSLProtocol all -SSLv2 -SSLv3
+ServerName <%= @name %>:443
+SSLCertificateFile /etc/pki/tls/certs/<%= scope['puppet_module_apache::params::server_name'] %>.crt
+SSLCertificateKeyFile /etc/pki/tls/private/<%= scope['puppet_module_apache::params::server_name'] %>.key
+</VirtualHost>   
