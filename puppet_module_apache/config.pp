@@ -1,4 +1,4 @@
-class apache::config {
+class puppet_module_apache::config {
   $public_ssl  = $::puppet_module_apache::params::public_ssl
   $public_fqdn = $::puppet_module_apache::params::public_fqdn
   $confdir     = $::puppet_module_apache::params::confdir
