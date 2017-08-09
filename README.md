@@ -10,7 +10,7 @@ Securing the ssh access to the instance and the port configuration can be done w
 Assumption : Assuming that there is a puppet master from which we are pulling the puppet code. 
 The EC2 instance launches with the user data to install puppet agent. 
 
-ALternative Solution with out any assumption : 
+Alternative Solution with out any assumption : 
 
 We could use git clone the puppet module, install puppet agent and apply the puppet module locally to have a fully functioning web server with the said html page. 
 All of this can be done by modifying the user-date under the ec2 instance cloud formation template. 
