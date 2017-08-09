@@ -14,4 +14,12 @@ class puppet_module_apache::config {
     group  => 'apache',
     mode   => '0700',
   }
+  file { '/var/www/html/index.html':
+    ensure => 'present',
+    owner  => 'apache',
+    group  => 'apache',
+    mode   => '0700',
+    content => template('puppet_module_apache/html.erb'),
+    notify  => Class['puppet_module_apache::service'],
+  }
 }
