@@ -1,3 +1,5 @@
+Listen 80
+Listen 443
 NameVirtualHost *:80
 NameVirtualHost *:443
 DocumentRoot "/var/www/html"
@@ -12,7 +14,7 @@ DocumentRoot "/var/www/html"
         ServerAdmin webmaster@localhost
         Redirect permanent / https://<%= scope['puppet_module_apache::params::server_name'] %>/
 </VirtualHost>
-<VirtualHost _default_:443>
+<VirtualHost *:443>
 DocumentRoot "/var/www/html"
 SSLProtocol all -SSLv2 -SSLv3
 ServerName <%= @name %>:443
